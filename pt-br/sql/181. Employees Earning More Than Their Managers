@@ -1,0 +1,34 @@
+181. Employees Earning More Than Their Managers
+
+Há uma tabela Employee com 4 colunas (id, name, salary, managerId)
+
+Nessa tabela há todos os funcionários da empresa, inclusive os gerentes(managers).
+O managerId é igual ao id do funcionário.
+
+
+| id | name  | salary | managerId |
+| 1  | Joe     | 70000 | 3                |
+| 2  | Henry | 80000 | 4                |
+| 3  | Sam   | 60000 | Null            |
+| 4  | Max   | 90000  | Null            |
+
+Então nessa tabela Sam é gerente do joe e o Max é gerente do Henry.
+
+O exercício pede para retornarmos o funcionário que ganha mais do que o próprio gerente, e retornar apenas o seu nome.
+Como o funcionário está na mesma tabela que o manager, há a necessidade de comparar a tabela Employee com a tabela Employee.
+
+SELECT funcionario.name FROM Employee funcionario
+JOIN Employee manager
+ON funcionario.managerId = manager.id
+WHERE funcionario.salary > manager.salary;
+
+
+E deu errado, por um detalhe que eu não me atentei. O exercício tinha como expectativa receber o nome do funcionário em uma coluna chamada Employee, e eu retornei o com o nome da coluna original name. Então a forma correta é:
+
+SELECT funcionario.name AS Employee FROM Employee funcionario
+JOIN Employee manager
+ON funcionario.managerId = manager.id
+WHERE funcionario.salary > manager.salary;
+
+
+
