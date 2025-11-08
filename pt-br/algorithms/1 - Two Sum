@@ -1,0 +1,112 @@
+1 - Two Sum
+
+Esse foi o primeiro desafio do LeetCode que eu fiz e quais avanços eu tive com o estudo de lógica, eficiência e complexidade de algoritmos.
+ 
+Resolvi registrar meu processo de raciocínio, desde a primeira ideia até entender por que a solução otimizada é tão mais rápida.
+
+Primeira tentativa — For dentro de For
+
+Minha primeira ideia foi simples: percorrer o array e comparar todos os seus valores até encontrar uma soma igual ao target.
+
+Regras do exercício:
+Preciso comparar cada número com os demais.
+
+
+Preciso salvar suas posições.
+
+
+Não posso somar um elemento com ele mesmo.
+
+Então o raciocínio final fica: para cada elemento que eu tenho eu devo comparar com todos os outros elementos que eu tenho acima da posição do que está sendo contado primeiro e se a soma deles for igual ao target eu devo retornar a posição dos elementos. Se não der certo a soma eu devo continuar percorrendo o array de 1 em 1 até chegar a soma correta percorrendo todo o tamanho do array.
+
+for (let i = 0 ; i < nums.length;  i++ ) {
+	for( let c = i+1; c < nums.length; c++){
+		if(nums[i] + nums[c] === target){
+			return [i,c];
+		}
+	}
+}
+
+Funcionou!
+Porém não é muito efetivo. No momento estou lidando com um array pequeno.
+Por exemplo, a soma que procuro é 17 dentro de um array [1,2,3,4,5,6,7,8,9].
+Meu programa vai rodar
+1+2 1+3 1+4 1+5 1+6 1+7 1+8 1+9, não achou, próximo
+2+3 2+4 2+5 2+6 2+7 2+8 2+9, não achou, próximo
+…
+8+9 achei!
+
+Foram 36 vezes para encontrar a soma. Para um array pequeno não teve problema nenhum, mas se eu tiver um array um pouco maior com 20 posições o meu programa pode percorrer até 190 vezes antes de me informar uma confirmação positiva ou negativa. Com 100 posições,4950.
+O tempo cresce rápido
+Pensando nisso, tenho que recorrer a outra lógica para percorrer o array menos vezes.
+
+Pesquisando um pouco encontrei o objeto Map ,mas eu ainda não sei como ele funciona.
+
+
+O que é o Map()
+É uma estrutura de dados própria(como um objeto), que armazena pares (Chave - Valor)
+set(“nome”,”Pedro”)
+set(“1”,”0”)
+As chaves podem ser  de qualquer tipo.
+Permite buscas e inserções muito rápidas, porque usa uma hash table internamente.
+O que é uma Hash Table?
+O JavaScript não precisa olhar todas as chaves, ele calcula o hash e vai direto na posição correspondente, e vê se há um valor lá.
+Diferente de percorrer o array valor por valor, no Map a busca é instantânea e constante.
+-+-+-+-+-+-
+Agora podemos usar o For para percorrer o array, ir acrescentando valores e suas posições dentro do Map e verificar se dentro dele de forma instantânea se a soma é igual ao target
+
+Dessa forma, quando buscamos a soma que procuro é 17 dentro de um array [1,2,3,4,5,6,7,8,9], não será mais necessário 36 tentativas(pois é a última soma a correta), será necessária apenas 9 verificações.
+
+Instantaneamente, ele indica a posição sem precisar percorrer um array de forma convencional usada no For que vai de 1 em 1. Porque agora temos a localização exata desse valor.
+
+Foi necessário mudar um pouco o pensamento, pois no primeiro exercício eu verificava se nums[i] + nums[c] = target, mas agora não sabemos mais quem é o nums[c] pois não uso mais um For dentro de outro For. O que iremos fazer então é chamar o nums[c] de x e buscar o valor de x. x = target - nums[i]
+Com o valor de x verifico se ele existe no Map que estará sendo alimentado a cada passagem do For.
+
+
+Código final.
+
+const numeros = new Map();
+for (let i = 0; i < nums.length; i++){
+const x = target - nums[i];
+if(numeros .has(x){
+return [numeros .get(x), i]
+}
+numeros .set(nums[i],i)
+}
+
+Buscando me aprofundar ainda mais nesse exercício, com conceitos apresentados durante a pesquisa que ainda não tenho entendimento como O(1), O(n), O(n²) e O(log n), fui em busca da leitura do livro Grokking Algorithms e artigos. 
+
+
+O que eu entendi com essa busca,  é que o loop dentro de outro loop que era o for dentro do for é uma Notação O(n²), porque ele compara cada elemento com todos os outros elementos crescendo muito rápido a quantidade de vezes que o programa pode rodar. Conhecida como notação quadrática.
+
+A solução que encontramos é um O(1) misturado com um O(n):
+
+
+Primeiramente uma complexidade O(n) porque estamos percorrendo o array 1 a 1 sem saber exatamente onde estão os valores que satisfazem o nosso target.
+ A cada valor que encontramos fazemos uma verificação com O(1) porque a verificação que fazemos é feita através do Map e como vimos ela é uma hash table e quando vamos verificar se o valor existe nos temos o local exato que ele teria, sem a necessidade de percorrer elemento por elemento do nosso Map.
+
+Agora o último e não menos importante é o O(log n)
+
+Se eu tivesse um valor fixo por exemplo e precisar descobrir onde está o meu segundo valor para a soma ser válida poderia efetuar a metodologia de ir quebrando ao meio e verificando se o número a ser buscado é maior ou menor e continuamente assim até encontrar o valor a ser buscado, por exemplo:
+
+Nº fixo = 20;
+Nº a ser buscado = ?
+Total da soma = 90;
+
+Ou seja, o nº a ser buscado é o 70. mas onde está o 70?
+
+A gente não sabe ainda então vamos buscá-lo dentro do seguinte array [0,1,2… 70, …100]
+
+Temos muitos valores e não sabemos se está completo o array com todos os valores ou não, então busco a metade dos valores e verifico se é maior ou menor, 
+
+Supondo que o valor do meio é 50. Então os valores menores que 50 não satisfazem a gente, então agora eu tenho apenas “50” valores para buscar, ao invés de 99 pelo método O(n). Faremos isso novamente até encontrar o valor.
+array inteiro : 100
+após a primeira verificação: 50
+75
+63
+69
+72
+71
+70 > em 7 palpites encontramos o valor
+
+Essa não seria possível no exercício, pois não sabemos quais são os valores que estamos buscando.
