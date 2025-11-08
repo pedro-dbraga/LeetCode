@@ -1,0 +1,24 @@
+175. Combine Two Tables
+
+Após ler o artigo sugerido pelo https://roadmap.sh/ de sql. 
+>>>https://www.mysqltutorial.org/mysql-basics/
+
+Consegui executar com maestria esse exercício.
+
+O exercício nos mostra duas tabelas com 3 a 4 colunas cada uma.
+tabela 1 : Person (personId, lastName, firstName)
+tabela 2 :Address (addressId, personId, city, state)
+
+Logo no início já percebemos uma chave estrangeira na tabela Address
+
+Enunciado 
+“Write a solution to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present in the Address table, report null instead.
+Return the result table in any order.”
+
+Sem problemas!
+
+Primeiro a gente seleciona os campos, depois informamos de onde vamos buscar e colocamos uma regra. 
+Ponto importante, eu quero todas as pessoas e é possível que não haja registro de endereço para determinadas pessoas na tabela, então não posso usar o Where se ñao ele não vai cortar as pessoas sem endereço. Para isso usarei o On que aplica a lógica durante o processo de junção das tabelas e define como as tabelas serão combinadas.
+
+SELECT p.firstName, p.lastName , a.city, a.state FROM Person AS p LEFT JOIN Address AS a
+ON p.personId = a.personId;
