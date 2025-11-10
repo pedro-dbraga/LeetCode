@@ -1,0 +1,28 @@
+182. Duplicate Emails
+
+
+Assim que começo a ler esse problema já me vem em mente a cláusula sql DISTINCT, ela elimina linhas duplicadas do meu SELECT.
+
+O exercício está me pedindo para retornar apenas os emails que estão duplicados e nada mais do meu banco de dados. Detalhe importante que aprendemos com o erro do exercício
+181. o output está pedindo que o nome da coluna seja “Email” e não “email” que é o original.
+
+O pensamento fica +- assim:
+Selecionar passando a cláusula DISTINCT na coluna email 
+Trocar o nome da coluna para “Email”
+Tudo isso será feito a partir da tabela Person
+
+Ate agora estamos selecionando todas as linhas da tabela passando um “filtro” nas linhas duplicadas, transformando elas em apenas uma linha, mas o exercício pede que eu mostre apenas as linhas duplicadas.
+
+Então vamos filtrar depois da tabela está pronta com o HAVING contando emails que ocupavam mais de uma linha.
+
+SELECT DISTINCT email AS Email
+FROM Person
+HAVING COUNT(*) > 1;
+Deu certo!
+Mas assim que eu fui me aprofundar na cláusula HAVING reparei que o funcionamento correto dela é junto com a cláusula GROUP BY, ou seja, o Count está sendo aplicado à tabela inteira, não por email.
+
+O correto seria.
+Select email AS Email
+From Person
+GROUP BY email
+HAVING COUNT(email) > 1;
