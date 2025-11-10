@@ -1,0 +1,18 @@
+183. Customers Who Never Order
+
+A cada exercício que passa, começo a desenvolver o exercício mais rápido e com mais confiança.
+
+Tenho duas tabelas
+Customers(id, name)
+Orders(id,customerId)
+
+O exercício pede que selecione apenas clientes que não fizeram nenhum pedido.
+
+Sem problemas, vamos criar uma “nova tabela” com um LEFT JOIN para selecionar todos os consumidores com uma cláusula de comparar o id do cliente com o customerId dos pedidos, quando essa tabela estiver pronta, é possível que alguns campos estejam NULL pois o cliente em questão não fez nenhum pedido.
+E aí é só filtrar esses dados para que o order id seja NULL.
+
+SELECT c.name AS Customers
+FROM Customers c
+LEFT JOIN Orders o
+ ON c.id = o.customerId
+WHERE o.id IS NULL;
