@@ -1,0 +1,54 @@
+13. Roman to Integer
+https://leetcode.com/problems/roman-to-integer/description/
+
+No começo desse exercício eu pensei, preciso de um papel para escrever as ideias.
+
+1º Vamos receber uma string com “símbolos” e transformar em números.
+
+2º Agora existem várias formas de continuar o exercício e a que eu escolhi é a como eu leio os algarismos romanos, vou somando da esquerda para a direita e se encontro algum numero que é maior que algum numero que ja passou, eu esqueço o número anterior, e diminuo o anterior do atual número que estou acrescentando.
+
+3ºSalvar tudo em uma variável para obter o resultado final.
+
+Pensamento final, para cada algarismo romano que recebo eu devo verificar qual o seu valor, e a partir do segundo algarismo que recebo devo verificar se o atual é maior que o anterior. Caso ele seja maior, eu “deleto” o anterior, pois ele é um complemento do atual e salvo essa informação e somo em uma variável.
+Ao final da soma retorno o valor total da função.
+
+var romanToInt = function(s) {
+    const map =  new Map();
+    let total = 0;
+    for (let i = 0; i < s.length; i++){
+        let current = 0;
+        if(s[i] === "I"){
+            current = 1;
+        }
+        if(s[i] === "V"){
+            current = 5;
+        }
+        if(s[i] === "X"){
+            current = 10;
+        }
+        if(s[i] === "L"){
+            current = 50;
+        }
+        if(s[i] === "C"){
+            current = 100;
+        }
+        if(s[i] === "D"){
+            current = 500;
+        }
+        if(s[i] === "M"){
+            current = 1000;
+        }
+        if(i > 0){
+            let previous = map.get(i - 1);
+            if(current > previous){
+                current = current - previous;
+                map.set(i-1, 0);
+                total = total - previous;
+            }
+        }
+        map.set(i, current);
+        total += current;
+    }
+    return total;
+};
+
