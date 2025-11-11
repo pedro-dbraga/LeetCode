@@ -1,0 +1,105 @@
+1 - Two Sum
+
+This is my first LeetCode exercise. In this document, I will show the study process and the gains I’ve made in computer logic and algorithms.
+
+In computer science, we don’t have only one way to get where we want. I‘m a beginner in this, so sometimes I will get the “wrong” answer.
+
+Description:
+
+Given an array of integers “nums” and an integer “target”, return indices of the two numbers such that they add up to target.
+Each input would have exactly one solution
+I may not use the same element twice. (nums[0] + nums[0] = wrong)
+
+First Attempt:
+
+Hum, easy…. First, I will run each element of the array, comparing it with the other elements in the array until I get the target value. For inside another For.
+
+for( let i = 0; i < nums.lenght ; i++){
+	for( let c = i + 1; c < nums.length; c++){
+		if(nums[i] + nums[c] === target){
+			return[ i , c ];
+}
+}
+}
+
+Very simple!
+For each element, I will compare it with other elements
+If the sum equals the target, I return the position
+If not, we will compare until we reach the target value.
+
+ But this isn’t efficient, because I’m working with a short array.
+
+For example:
+target = 17;
+array nums [1,2,3,4,5,6,7,8,9];
+The computer will do
+1+2 1+3 1+4 1+5 1+6 1+7 1+8 1+9, not herer, next
+2+3 2+4 2+5 2+6 2+7 2+8 2+9, not herer, next
+…
+8+9, got it!
+
+That was 36 attempts, for an array with 9 numbers.
+20 numbers? Will be 190 in total.
+100? 4950.
+Can it be the first? Yes, but we don’t know how many attempts it will take to reach our goal.
+
+Thinking about that, I need to learn another way to do the same thing. With a little research, I found the object Map(), but I don’t know how it works.
+
+Map()
+
+Map is a collection of key-value pairs where the keys can be of any data type, including objects or primitive values. 
+
+map.set(1, “one”) > 1 is the key
+map.set(“name”, “Pedro”) > name is the key
+map.get(“name”) > Pedro
+
+We can have any type of key.
+Fast search, fast insertion. Why? HASH TABLE.  
+
+This is crazy, when i start searching about that I found a book called Grokking Algorithms.
+
+This mapping allows for very fast searching, insertion, and deletion because the key can be used to directly calculate the location of the value. If I worked in a market a long time ago and someone asked me “How much is the water?” I don’t need to search, I know how much it is, so I answer instantly  $1. 
+
+O(n)O(1)O(n²)O(log n)? Not now, but we will talk about this latter.
+
+With new learnings, it is necessary to change my algorithm. In the first attempt, I verify if nums[i] + nums[c] = target, but now I don’t know who will be “c”, because I’m not using two “for”. So I will call nums[c] by x, and search by him. 
+nums[i] + x = target === x = target - nums[i]; X will call “complement” after herer.
+
+Now, the x or the complement will be searched in a hash table.
+For each element, the algorithm verifies the complement value and searches for it in the Map, if Map doesn’t have the correct value, the current value (nums[i]) will be set in the Map.
+
+In this way, for the same example used before, the search will have 9 attempts, instead of 36.
+
+Second attempt:
+
+const map = new Map();
+for ( let i = 0; i < nums.length ; i++ ) {
+let complement = target - nums[i];
+ 	if(map.has(complement)){
+		return[i, map.get(complement)];
+}
+map.set(nums[i]);
+}
+
+Looking to upgrade my skills and to understand more about new concepts that I learned in this exercise, like: Hash Table, O(n), O(1), O(n²), and O(log n). I read some chapters of Grokking Algorithms.
+
+There, I understand that my first attempt was an O(n²). Because the algorithms' time was growing too fast. With 9 elements were possibly 36 attempts, and with 20 elements, 190.
+For inside another for O(n²).
+
+The second solution? O(n) and O(1).
+O(n) > Searching for each element in the array. 
+10 elements 10 possibilities.
+100 elements 100 possibilities.
+O(1) > hash table, 100 elements? constant search. Only one possibility. 
+
+The last one O(log n)
+
+If I am having some fun with my friends and tell someone about them, that they can choose any number 1 to 100, and I can tell them the correct number in only seven attempts, with one rule.
+
+First and only rule - They need to tell me if the number is higher or lower than my attempt. 
+
+First attempt - 50. Why 50? because they will say higher or lower, then 50 numbers will not be the right number. I will only have to say 1 - 49 or 51 - 100
+
+I will cut my “list” of attempts in half every time until I get the right number.
+
+50 - 25 - 13 - 7 - 4 - 2  - 1
