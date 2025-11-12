@@ -1,0 +1,28 @@
+197. Rising Temperature
+
+Intuition
+For each day it is necessary compare with the previous day and verify if the temperature is bigger then the previous day.
+ 
+Select t1.id FROM Weather t1
+    LEFT JOIN Weather t2
+    WHERE DAY(t1.recordDate) > (DAY(t2.recordDate) - 1)
+    AND t1.temperature > t2.temperature;
+
+
+You have an error in your SQL syntax
+
+Ok, first mistake: join without ON
+Sometimes I forget that I need to build the table with a rule first, then put a WHERE clause if necessary.
+
+Second mistake: DATEDIFF
+
+I try to do fast and i din’t read the DATE mysql DATA types before doing this exercise.
+
+There it is  explained.
+DATEDIFF(end_date, start_date) = condition
+
+
+Select t1.id FROM Weather t1
+    LEFT JOIN Weather t2
+ON DATEDIFF(t1.recordDate, t2.recordDate) = 1
+    WHERE  t1.temperature > t2.temperature;
