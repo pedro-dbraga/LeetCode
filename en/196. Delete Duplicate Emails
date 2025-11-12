@@ -1,0 +1,20 @@
+196. Delete Duplicate Emails
+
+
+In this exercise I didn’t know that delete could receive some clause that I learn to use in the Select statement, but I can use join in the delete statement.
+
+The exercise Rule:
+
+Write a solution to delete all duplicate emails, keeping only one email with the smallest id.
+Use a DELETE statement not a SELECT one.
+
+The line of reasoning is to duplicate the table and compare with herself. The first table will be p and the second one will be dupli. If the table has the same email AND email p has a bigger id than the email dupli id, then i DELETE the row of this email.
+
+DELETE p FROM Person p
+INNER JOIN Person dupli
+WHERE p.email = dupli.email AND  p.id > dupli.id
+
+This exercise were made based on:
+
+https://www.mysqltutorial.org/mysql-basics/mysql-delete-duplicate-rows/
+
